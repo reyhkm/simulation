@@ -88,6 +88,7 @@ const App: React.FC = () => {
               isLoading={isLoading}
               progress={progress}
               totalToGenerate={targetCount}
+              params={attackParams}
             />
           </div>
         </main>

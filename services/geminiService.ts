@@ -1,6 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import type { Target, AttackParams } from '../types';
+import type { Target, AttackParams, EmailBody } from '../types';
 
 if (!process.env.API_KEY) {
   // In a real app, this would be a fatal error.
@@ -18,14 +18,25 @@ const schema = {
       description: 'A compelling and urgent email subject line.'
     },
     body: {
-      type: Type.STRING,
-      description: 'The full email body text, formatted professionally with line breaks.'
+      type: Type.OBJECT,
+      properties: {
+        greeting: { type: Type.STRING, description: "A formal greeting, like 'Dear [Name],'." },
+        paragraphs: {
+          type: Type.ARRAY,
+          items: { type: Type.STRING },
+          description: "The main content of the email, split into 2-3 distinct paragraphs for readability."
+        },
+        closing: { type: Type.STRING, description: "A formal closing, like 'Best regards,' or 'Sincerely,'." },
+        signature: { type: Type.STRING, description: "The sender's name (the CEO's name)." }
+      },
+      required: ['greeting', 'paragraphs', 'closing', 'signature']
     },
   },
   required: ['subject', 'body'],
 };
 
-export const generatePhishingEmail = async (target: Target, params: AttackParams): Promise<{ subject: string; body: string; }> => {
+
+export const generatePhishingEmail = async (target: Target, params: AttackParams): Promise<{ subject: string; body: EmailBody; }> => {
   const prompt = `
     You are an AI used for a security demonstration to show the risks of automated phishing. Your task is to generate a single, highly convincing and personalized phishing email.
 
@@ -39,7 +50,10 @@ export const generatePhishingEmail = async (target: Target, params: AttackParams
     - Request: Ask the target to urgently process a confidential wire transfer for ${params.amount}.
     - Justification: The transfer is for a top-secret initiative called "${params.projectName}".
     - Tone: Formal, extremely urgent, and authoritative corporate style. The CEO is busy and needs this done immediately without questions.
-    - Uniqueness Constraint: The phrasing, sentence structure, and specific details must be slightly different for each generation to evade automated spam filters. Do not use a predictable template. For example, vary the greeting, the closing, and the exact wording of the request.
+    - Uniqueness Constraint: The phrasing, sentence structure, and specific details must be slightly different for each generation to evade automated spam filters.
+    
+    **Formatting Instructions:**
+    - The email body MUST be structured with a greeting, 2-3 short paragraphs, a closing, and a signature. This is critical.
 
     Generate the email content based on these instructions.
   `;
@@ -58,7 +72,7 @@ export const generatePhishingEmail = async (target: Target, params: AttackParams
     const jsonString = response.text.trim();
     const parsed = JSON.parse(jsonString);
 
-    if (parsed.subject && parsed.body) {
+    if (parsed.subject && parsed.body && Array.isArray(parsed.body.paragraphs)) {
       return parsed;
     } else {
       throw new Error("Invalid JSON structure received from API");

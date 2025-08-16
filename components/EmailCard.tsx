@@ -1,34 +1,79 @@
 import React from 'react';
-import type { GeneratedEmail } from '../types';
+import type { GeneratedEmail, AttackParams, EmailBody } from '../types';
 
 interface EmailCardProps {
   email: GeneratedEmail;
+  params: AttackParams;
 }
 
-const UserIcon: React.FC = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 inline-block mr-2 text-slate-500 dark:text-slate-400" viewBox="0 0 20 20" fill="currentColor">
-        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-    </svg>
+const SenderAvatar: React.FC<{ ceoName: string }> = ({ ceoName }) => {
+    const initial = ceoName.charAt(0).toUpperCase();
+    return (
+        <div className="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-lg font-bold text-slate-500 dark:text-slate-400 mr-4">
+            {initial}
+        </div>
+    );
+};
+
+const DetailRow: React.FC<{ label: string; value: React.ReactNode }> = ({ label, value }) => (
+    <div className="text-sm">
+        <span className="text-slate-500 dark:text-slate-400">{label}: </span>
+        <span className="text-slate-700 dark:text-slate-300">{value}</span>
+    </div>
 );
 
-export const EmailCard: React.FC<EmailCardProps> = ({ email }) => {
-  const isSuccess = email.status === 'success';
-  const borderColor = isSuccess ? 'border-l-green-500' : 'border-l-red-500';
 
-  return (
-    <div className={`bg-white dark:bg-slate-800 p-4 rounded-md border-l-4 ${borderColor} animate-fade-in shadow-md`}>
-      <div className="flex items-center text-sm text-slate-500 dark:text-slate-400 mb-2">
-        <UserIcon />
-        <strong>To:</strong><span className="ml-2">{email.target.name} &lt;...&gt;</span>
-        <span className="ml-auto text-xs">{email.target.company}</span>
-      </div>
-      <h3 className={`font-bold ${isSuccess ? 'text-slate-800 dark:text-slate-100' : 'text-red-600 dark:text-red-400'}`}>
-        Subject: {email.subject}
-      </h3>
-      <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
-        <p className="text-sm text-slate-600 dark:text-slate-300 whitespace-pre-wrap font-mono">
+export const EmailCard: React.FC<EmailCardProps> = ({ email, params }) => {
+  const isSuccess = email.status === 'success';
+  const ceoEmailDomain = email.target.company.toLowerCase().replace(/[^a-z0-9]/g, '') + '.com';
+  const ceoEmailAddress = `${params.ceoName.toLowerCase().replace(' ', '.')}@${ceoEmailDomain}`;
+
+  const renderBody = () => {
+    // When generation fails, the body is a simple string.
+    if (typeof email.body === 'string') {
+      return (
+        <p className="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">
           {email.body}
         </p>
+      );
+    } else {
+      // On success, the body is a structured object.
+      return (
+        <div className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+          <p>{email.body.greeting}</p>
+          {email.body.paragraphs.map((p, i) => (
+            <p key={i} className="mt-4">{p}</p>
+          ))}
+          <p className="mt-4">{email.body.closing}</p>
+          <p className="mt-1">{email.body.signature}</p>
+        </div>
+      );
+    }
+  };
+
+  return (
+    <div className={`bg-white dark:bg-slate-800/70 p-4 rounded-lg border border-slate-200 dark:border-slate-700 animate-fade-in shadow-md transition-all`}>
+      <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700">
+        <div className="flex items-center">
+            <SenderAvatar ceoName={params.ceoName} />
+            <div>
+                <h3 className="font-bold text-slate-800 dark:text-slate-100">{params.ceoName}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">To: {email.target.name}</p>
+            </div>
+        </div>
+        <span className={`px-2 py-1 text-xs font-semibold rounded-full ${isSuccess ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'}`}>
+            {isSuccess ? 'Success' : 'Failed'}
+        </span>
+      </div>
+
+      <div className="mt-4 space-y-1">
+        <DetailRow label="From" value={<>{params.ceoName} &lt;{ceoEmailAddress}&gt;</>} />
+        <DetailRow label="To" value={<>{email.target.name} &lt;...&gt;</>} />
+        <DetailRow label="Subject" value={<strong className={isSuccess ? 'text-slate-800 dark:text-slate-100' : 'text-red-600 dark:text-red-400'}>{email.subject}</strong>} />
+      </div>
+
+      <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+        {renderBody()}
       </div>
     </div>
   );

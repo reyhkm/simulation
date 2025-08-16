@@ -1,5 +1,5 @@
 import React from 'react';
-import type { GeneratedEmail } from '../types';
+import type { GeneratedEmail, AttackParams } from '../types';
 import { EmailCard } from './EmailCard';
 import { ProgressBar } from './ProgressBar';
 
@@ -8,9 +8,10 @@ interface ResultsConsoleProps {
   isLoading: boolean;
   progress: number;
   totalToGenerate: number;
+  params: AttackParams;
 }
 
-export const ResultsConsole: React.FC<ResultsConsoleProps> = ({ emails, isLoading, progress, totalToGenerate }) => {
+export const ResultsConsole: React.FC<ResultsConsoleProps> = ({ emails, isLoading, progress, totalToGenerate, params }) => {
   return (
     <div className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-6 shadow-lg h-full min-h-[600px] flex flex-col">
       <h2 className="text-xl font-bold text-cyan-600 dark:text-cyan-400 mb-4 border-b border-slate-200 dark:border-slate-700 pb-2">Generation Console</h2>
@@ -37,7 +38,7 @@ export const ResultsConsole: React.FC<ResultsConsoleProps> = ({ emails, isLoadin
           </div>
         )}
         {emails.map((email, index) => (
-          <EmailCard key={index} email={email} />
+          <EmailCard key={index} email={email} params={params} />
         ))}
       </div>
     </div>
