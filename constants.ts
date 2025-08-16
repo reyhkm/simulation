@@ -1,0 +1,35 @@
+
+import type { Target } from './types';
+
+export const MOCK_TARGETS: Target[] = [
+  { id: 1, name: 'Alice Johnson', company: 'Innovate Inc.', position: 'Senior Project Manager' },
+  { id: 2, name: 'Bob Williams', company: 'Future Solutions', position: 'Lead Developer' },
+  { id: 3, name: 'Charlie Brown', company: 'Data Dynamics', position: 'Data Analyst' },
+  { id: 4, name: 'Diana Miller', company: 'QuantumLeap Co.', position: 'Marketing Director' },
+  { id: 5, name: 'Ethan Davis', company: 'Innovate Inc.', position: 'Financial Controller' },
+  { id: 6, name: 'Fiona Garcia', company: 'Future Solutions', position: 'HR Manager' },
+  { id: 7, name: 'George Rodriguez', company: 'Data Dynamics', position: 'Systems Administrator' },
+  { id: 8, name: 'Hannah Martinez', company: 'QuantumLeap Co.', position: 'Sales Executive' },
+  { id: 9, name: 'Ian Hernandez', company: 'Innovate Inc.', position: 'Junior Developer' },
+  { id: 10, name: 'Jane Lopez', company: 'Future Solutions', position: 'UX Designer' },
+  { id: 11, name: 'Kevin Gonzalez', company: 'Data Dynamics', position: 'Business Intelligence Analyst' },
+  { id: 12, name: 'Laura Wilson', company: 'QuantumLeap Co.', position: 'Operations Chief' },
+  { id: 13, name: 'Mason Anderson', company: 'Innovate Inc.', position: 'Product Owner' },
+  { id: 14, name: 'Nora Thomas', company: 'Future Solutions', position: 'QA Engineer' },
+  { id: 15, name: 'Oscar Taylor', company: 'Data Dynamics', position: 'Database Manager' },
+  { id: 16, name: 'Penelope Moore', company: 'QuantumLeap Co.', position: 'Content Strategist' },
+  { id: 17, name: 'Quinn Jackson', company: 'Innovate Inc.', position: 'DevOps Engineer' },
+  { id: 18, name: 'Rachel White', company: 'Future Solutions', position: 'Scrum Master' },
+  { id: 19, name: 'Samuel Harris', company: 'Data Dynamics', position: 'Cloud Engineer' },
+  { id: 20, name: 'Tina Clark', company: 'QuantumLeap Co.', position: 'PR Specialist' },
+  { id: 21, name: 'Ulysses Lewis', company: 'Innovate Inc.', position: 'Senior Accountant' },
+  { id: 22, name: 'Violet Robinson', company: 'Future Solutions', position: 'Frontend Developer' },
+  { id: 23, name: 'Walter Walker', company: 'Data Dynamics', position: 'Network Security' },
+  { id: 24, name: 'Xena Perez', company: 'QuantumLeap Co.', position: 'Social Media Manager' },
+  { id: 25, name: 'Yusuf Hall', company: 'Innovate Inc.', position: 'Mobile Developer' },
+  { id: 26, name: 'Zoe Young', company: 'Future Solutions', position: 'IT Support' },
+  { id: 27, name: 'Adam Allen', company: 'Data Dynamics', position: 'Machine Learning Engineer' },
+  { id: 28, name: 'Bella King', company: 'QuantumLeap Co.', position: 'Graphic Designer' },
+  { id: 29, name: 'Caleb Wright', company: 'Innovate Inc.', position: 'Legal Counsel' },
+  { id: 30, name: 'Daisy Scott', company: 'Future Solutions', position: 'Recruitment Specialist' }
+];

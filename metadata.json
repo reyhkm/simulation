@@ -1,0 +1,5 @@
+{
+  "name": "Copy of Gemini Phishing Vector Demonstrator",
+  "description": "A proof-of-concept application demonstrating the large-scale abuse potential of generative AI for creating unique, personalized phishing emails. This tool is for security research and reporting purposes only.",
+  "requestFramePermissions": []
+}
