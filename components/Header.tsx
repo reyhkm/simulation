@@ -35,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
       </p>
       <div className="mt-4 max-w-3xl mx-auto bg-yellow-100 border border-yellow-400 text-yellow-800 dark:bg-yellow-900/50 dark:border-yellow-600 dark:text-yellow-300 px-4 py-3 rounded-md text-sm">
         <WarningIcon />
-        <strong>For Security Research & Reporting Purposes Only.</strong> Do not use for any malicious activities.
+        <strong>For Security Research & Reporting Purposes Only.</strong>
       </div>
        <button
         onClick={toggleTheme}
